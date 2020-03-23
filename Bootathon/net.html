@@ -1,0 +1,43 @@
+<html>
+<head>
+<script>
+
+//my circle class
+var Circle = function(circleX, circleY, radius, color){
+
+    this.circleX = circleX;
+    this.circleY = circleY;
+    this.radius = radius;
+    this.color = color;
+
+    this.draw = function(canvasId){
+        var c = document.getElementById(canvasId);
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.strokeStyle = this.color;
+        ctx.arc(this.circleX, this.circleY, this.radius, 0, 2 * Math.PI);
+        ctx.stroke();
+    };
+};
+
+
+
+function drawSeparatedCircles(){        
+    var circles = [];
+for(let i=1;i<=10;i++)
+    circles.push(new Circle(50,60*i,25,"black"));
+ 
+    for(var i = 0; i < circles.length; i++){
+        circles[i].draw("separateCircles");   
+    }    
+}
+
+</script>
+</head>
+<body>
+<canvas id="separateCircles" width="1520px" height="650px" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+<br>
+<input type="button" value="Draw Separated Circles" onclick="drawSeparatedCircles();"/>
+</body>
+</html>

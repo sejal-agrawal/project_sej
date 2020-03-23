@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    var map = new Map();
+
+map.set("orange", 10);
+map.set("apple", 5);
+map.set("banana", 20);
+map.set("cherry", 13);
+
+map[Symbol.iterator] = function* () {
+    yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
+}
+
+for (let [key, value] of map) {     // get data sorted
+    console.log(key + ' ' + value);
+}
+
+console.log([...map]);              // sorted order
+console.log([...map.entries()]);    // original insertation order
+</script>
+</body>
+</html>

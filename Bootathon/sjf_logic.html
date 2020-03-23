@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <button type="submit" onclick="fun()">Verify</button>
+        <script>
+            var ar=[];
+            var gc=[];
+            ar.push({k:2,AT:0,BT:8});
+            ar.push({k:1,AT:4,BT:3});
+            ar.push({k:3,AT:5,BT:4});
+            ar.push({k:4,AT:9,BT:2});
+              Array.prototype.remove = function(index){
+                var temp = [];
+                for(let i=0;i<this.length;i++){
+                    if(i===index)
+                        continue;
+                    temp.push(this[i]);
+                }
+                return temp;
+            };
+            function fun(){
+                var min=Number.MAX_SAFE_INTEGER,k,sum,we_ttat=0,we_atat,we_twt=0,we_awt=0;
+                sum=parseFloat(ar[0].AT)+parseFloat(ar[0].BT);
+            gc.push({A:sum,B:sum-parseFloat(ar[0].AT),C:0});
+            we_ttat+=parseFloat(gc[0].B);
+            we_twt+=parseFloat(gc[0].C);
+            ar=ar.remove(0);
+            for(let i=0;i<3;i++)
+            {
+                for(let j=0;j<ar.length;j++)
+                {
+                    if(gc[i].A>=ar[j].AT)
+                    {
+                        if(min>=ar[j].BT)
+                        {
+                            min=ar[j].BT;
+                            k=j;
+                        }
+                    }
+                }
+                gc.push({A:parseFloat(sum)+parseFloat(min),B:parseFloat(parseFloat(sum)+parseFloat(min)-parseFloat(ar[k].AT)),C:parseFloat(parseFloat(sum)-parseFloat(ar[k].AT))});
+               we_ttat+=parseFloat(gc[k].B);
+               we_twt+=parseFloat(gc[i+1].C);
+                sum=parseFloat(sum)+parseFloat(min);
+                 min=Number.MAX_SAFE_INTEGER;
+                ar = ar.remove(k);
+            }
+            we_atat=we_ttat/4;
+            we_awt+=we_twt/4;
+            console.log(we_atat);
+            console.log(we_awt);
+            console.log(JSON.stringify(gc));
+        
+        }
+            </script>
+    </body>
+</html>

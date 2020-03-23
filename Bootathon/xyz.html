@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>First Come First Serve</title>
+</head>
+<body>
+
+    Enter the number of processes:<input type="text" id="num_proc" />
+    Click to enter the values<input type="submit" onclick="ope()">  
+</body>
+<script>
+     //track mouse position on mousemove
+     var mousePosition;
+        //track state of mousedown and up
+        var isMouseDown;
+        document.addEventListener('mousemove', move, false);
+        document.addEventListener('mousedown', setDraggable, false);
+        document.addEventListener('mouseup', setDraggable, false);
+     var x;
+    var arr=[];
+    var circles=[];
+    var context;
+    var Circle = function(circleX, circleY, radius, color){
+
+    this.circleX = circleX;
+    this.circleY = circleY;
+    this.radius = radius;
+    this.color = color;
+
+
+    this.draw = function(canvasId){
+        var c = document.getElementById(canvasId);
+        var ctx = c.getContext("2d");
+    
+        context = ctx;
+        ctx.beginPath();
+        ctx.strokeStyle = this.color;
+        ctx.arc(this.circleX, this.circleY, this.radius, 0, 2 * Math.PI);
+        ctx.stroke();
+    };
+};
+  
+        function ope(){
+          x=document.getElementById("num_proc").value;
+            for(let i=0;i<x;i++){
+               document.write('<table align="center"><th><tr><td>Process No.</td><td>Arrival Time</td><td>BurstTime</td></tr><tr><td>'+i+1+'</td><td><input type="text" id="AT-'+i+'"></td><td><input type="text" id="BT-'+i+'"></td></tr></th></table>');
+        }
+               document.write('<input type="submit" onclick="in_val()">');
+        }
+       function in_val(){
+           // var circles = [];
+            for(let i=0;i<x;i++){
+                var a=document.getElementById("AT-"+i).value;
+                var b=document.getElementById("BT-"+i).value;
+                arr.push({AT:a,BT:b});
+                
+                //my circle class
+                document.write('<canvas id="separateCircles" width="1520px" height="650px" style="border:1px solid #d3d3d3;"></canvas>');
+
+                //function drawSeparatedCircles(){        
+                console.log(JSON.stringify(arr[i]));
+
+            }
+            for(let i=1;i<=x;i++)
+                circles.push(new Circle(50,60*i,25,"black"));
+
+            for(var j = 0; j < circles.length; j++){
+                circles[j].draw("separateCircles"); 
+                context.font = "20px Arial";
+                context.fillText("AT: "+arr[j].AT+" "+"BT: "+arr[j].BT,90,60*(j+1));  
+            }
+
+
+        }
+
+
+
+         //key track of circle focus and focused index
+         var focused = {
+            key: 0,
+            state: false
+        }
+        
+        
+        
+            function move(e) {
+                if (!isMouseDown) {
+                    return;
+                }
+                getMousePosition(e);
+                //if any circle is focused
+                if (focused.state) {
+                    circles[focused.key].x = mousePosition.x;
+                    circles[focused.key].y = mousePosition.y;
+                   // draw();
+                    return;
+                }
+                //no circle currently focused check if circle is hovered
+                for (var i = 0; i < circles.length; i++) {
+                    if (intersects(circles[i])) {
+                        //circles.move(i, 0);
+                        focused.key=i;
+                        focused.state = true;
+                        break;
+                    }
+                }
+                draw();
+            }
+        
+            //set mousedown state
+            function setDraggable(e) {
+                var t = e.type;
+                if (t === "mousedown") {
+                    isMouseDown = true;
+                } else if (t === "mouseup") {
+                    isMouseDown = false;
+                    releaseFocus();
+                }
+            }
+        
+            function releaseFocus() {
+                focused.state = false;
+            }
+        
+            function getMousePosition(e) {
+        
+                var rect = context.getBoundingClientRect();
+                mousePosition = {
+                    x: Math.round(e.x - rect.left),
+                    y: Math.round(e.y - rect.top)
+                }
+            }
+        
+            //detects whether the mouse cursor is between x and y relative to the radius specified
+            function intersects(circle) {
+                // subtract the x, y coordinates from the mouse position to get coordinates 
+                // for the hotspot location and check against the area of the radius
+                var areaX = mousePosition.x - circle.x;
+                var areaY = mousePosition.y - circle.y;
+                //return true if x^2 + y^2 <= radius squared.
+                return areaX * areaX + areaY * areaY <= circle.r * circle.r;
+            }
+        
+        Array.prototype.move = function (old_index, new_index) {
+            if (new_index >= this.length) {
+                var k = new_index - this.length;
+                while ((k--) + 1) {
+                    this.push(undefined);
+                }
+            }
+            this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+        };
+       // draw();
+        //end
+           
+      //  }
+            </script>
+</html>
